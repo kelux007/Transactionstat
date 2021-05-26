@@ -34,7 +34,7 @@ class TransactionDAOImplTest {
     @Test
     void testAddTransaction() {
         Transaction transaction = new Transaction();
-        transaction.setAmount("1320252.3343");
+        transaction.setAmount("1000.3343");
         transaction.setTimestamp("2018-07-17T09:59:51.312Z");
         String result = transactionDAOImpl.addTransaction(transaction);
         Assertions.assertEquals("201", result);

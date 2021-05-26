@@ -1,7 +1,6 @@
 package com.centricgateway.transtatservice.utility;
 
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,10 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -30,7 +29,7 @@ public class Utils {
     }
 
     //VALIDATES THE DATE STRING IF IT IS IN ISO 8601 FORMAT
-    public static boolean isValidDate(String dateString) throws ParseException {
+    public static boolean isValidDate(String dateString){
         TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(dateString);
         Instant i = Instant.from(ta);
         Date date = Date.from(i);
@@ -44,6 +43,19 @@ public class Utils {
         numberFormat.setMaximumFractionDigits(2);
         numberFormat.setMinimumFractionDigits(2);
         return numberFormat.format(input);
+    }
+
+    public static boolean has60SecsPassed(String dateString)
+    {
+        TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(dateString);
+        Instant i = Instant.from(ta);
+        Date date = Date.from(i);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        Long numberOfMilliSec = Calendar.getInstance().getTimeInMillis() - calendar.getTimeInMillis();
+        double numberOfSecondsPassed = numberOfMilliSec / 1000.0;
+        System.out.println("seconds passed: " + numberOfSecondsPassed);
+        return numberOfSecondsPassed >= 60;
     }
 
 }
